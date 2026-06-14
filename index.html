@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MACROICE — Muhammadyusuf Karimov</title>
+<meta name="description" content="Marvel, DC va top kinolar haqida kontent.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#00002f;
+  --surface:#04043a;
+  --surface2:#080845;
+  --border:rgba(255,140,50,0.1);
+  --border2:rgba(255,140,50,0.18);
+  --text:#fff8f0;
+  --muted:rgba(255,230,200,0.55);
+  --hint:rgba(255,200,150,0.3);
+  --orange:#ff6b1a;
+  --orange2:#ff9045;
+  --orange-dim:rgba(255,107,26,0.12);
+  --orange-glow:rgba(255,107,26,0.4);
+  --orange-soft:rgba(255,144,69,0.18);
+  --blue-accent:#3b5bdb;
+  --font:'Space Grotesk',sans-serif;
+  --mono:'DM Mono',monospace;
+}
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+/* ── BG ── */
+.bg-grid{
+  position:fixed;inset:0;z-index:0;
+  background-image:
+    linear-gradient(rgba(255,107,26,0.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,107,26,0.04) 1px,transparent 1px);
+  background-size:56px 56px;
+  animation:gridDrift 25s linear infinite;
+}
+@keyframes gridDrift{from{background-position:0 0}to{background-position:56px 56px}}
+
+.bg-orb1{
+  position:fixed;top:-180px;left:-120px;
+  width:560px;height:560px;border-radius:50%;
+  background:radial-gradient(circle,rgba(59,91,219,0.22) 0%,transparent 65%);
+  z-index:0;pointer-events:none;
+  animation:orb1 14s ease-in-out infinite;
+}
+.bg-orb2{
+  position:fixed;bottom:-160px;right:-100px;
+  width:480px;height:480px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,107,26,0.16) 0%,transparent 65%);
+  z-index:0;pointer-events:none;
+  animation:orb2 18s ease-in-out infinite;
+}
+.bg-orb3{
+  position:fixed;top:40%;left:60%;
+  width:300px;height:300px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,107,26,0.07) 0%,transparent 70%);
+  z-index:0;pointer-events:none;
+  animation:orb2 22s ease-in-out infinite reverse;
+}
+@keyframes orb1{0%,100%{transform:translate(0,0)}50%{transform:translate(35px,25px)}}
+@keyframes orb2{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,-20px)}}
+
+.cursor-glow{
+  position:fixed;width:480px;height:480px;border-radius:50%;
+  pointer-events:none;z-index:0;
+  background:radial-gradient(circle,rgba(255,107,26,0.07) 0%,transparent 70%);
+  transform:translate(-50%,-50%);
+  transition:opacity 0.4s;opacity:0;
+}
+
+/* ── WRAP ── */
+.wrap{
+  position:relative;z-index:1;
+  max-width:520px;margin:0 auto;
+  padding:3.5rem 1.5rem 5rem;
+}
+
+/* ── HERO ── */
+.hero{text-align:center;margin-bottom:3rem}
+
+.avatar-wrap{
+  position:relative;display:inline-flex;
+  align-items:center;justify-content:center;
+  margin-bottom:1.75rem;
+}
+
+.avatar{
+  width:104px;height:104px;border-radius:50%;
+  background:var(--surface2);
+  border:2px solid rgba(255,107,26,0.4);
+  position:relative;z-index:2;
+  overflow:hidden;
+  transition:border-color 0.35s,box-shadow 0.35s;
+}
+.avatar img{
+  width:100%;height:100%;
+  object-fit:cover;border-radius:50%;
+  display:block;
+}
+
+.avatar-ring{
+  position:absolute;inset:-7px;border-radius:50%;
+  border:1.5px solid rgba(255,107,26,0.22);
+  animation:ringPulse 3.5s ease-in-out infinite;z-index:1;
+}
+.avatar-ring2{
+  position:absolute;inset:-16px;border-radius:50%;
+  border:1px solid rgba(255,107,26,0.09);
+  animation:ringPulse 3.5s ease-in-out infinite 0.7s;
+}
+@keyframes ringPulse{
+  0%,100%{opacity:0.35;transform:scale(1)}
+  50%{opacity:1;transform:scale(1.04)}
+}
+
+.avatar-wrap:hover .avatar{
+  border-color:var(--orange);
+  box-shadow:0 0 24px var(--orange-glow),0 0 64px rgba(255,107,26,0.18);
+}
+.avatar-wrap:hover .avatar-ring{
+  border-color:rgba(255,107,26,0.5);
+}
+
+/* ── NAME & BRAND ── */
+.hero-name{
+  font-size:clamp(26px,5.5vw,36px);
+  font-weight:700;letter-spacing:-0.025em;
+  color:var(--text);line-height:1.1;margin-bottom:6px;
+}
+
+.hero-brand{
+  font-family:var(--mono);font-size:12px;
+  color:var(--orange);letter-spacing:0.2em;
+  text-transform:uppercase;
+  text-shadow:0 0 18px var(--orange-glow);
+  margin-bottom:14px;
+}
+
+.hero-bio{
+  font-size:15px;color:var(--muted);
+  line-height:1.65;max-width:360px;
+  margin:0 auto 26px;
+}
+
+/* ── STATS ── */
+.stats{
+  display:flex;border:1px solid var(--border2);
+  border-radius:16px;overflow:hidden;
+  background:var(--surface);
+}
+.stat{
+  flex:1;padding:15px 8px;text-align:center;
+  border-right:1px solid var(--border);
+  transition:background 0.25s;
+  cursor:default;
+}
+.stat:last-child{border-right:none}
+.stat:hover{background:var(--surface2)}
+.stat-num{
+  font-size:19px;font-weight:700;
+  letter-spacing:-0.03em;
+  color:var(--orange2);
+  text-shadow:0 0 14px rgba(255,144,69,0.35);
+}
+.stat-plat{
+  font-size:9px;color:var(--hint);
+  font-family:var(--mono);text-transform:uppercase;
+  letter-spacing:0.1em;margin-top:3px;
+}
+
+/* ── SECTION LABEL ── */
+.sec-label{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--hint);margin-bottom:12px;
+}
+
+/* ── DIVIDER ── */
+.divider{
+  height:1px;background:var(--border);
+  margin:2.5rem 0 1.75rem;position:relative;
+}
+.divider::after{
+  content:'';position:absolute;
+  left:50%;top:0;transform:translateX(-50%);
+  width:90px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--orange),transparent);
+  opacity:0.45;
+}
+
+/* ── LINK CARDS ── */
+.links{display:flex;flex-direction:column;gap:10px;margin-bottom:2.5rem}
+
+.link-card{
+  display:flex;align-items:center;gap:16px;
+  padding:15px 18px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:15px;
+  text-decoration:none;
+  position:relative;overflow:hidden;
+  transition:border-color 0.3s,transform 0.25s,box-shadow 0.3s,background 0.25s;
+}
+
+/* gradient tint on hover */
+.link-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(120deg,var(--pc,rgba(255,107,26,0.07)) 0%,transparent 55%);
+  opacity:0;transition:opacity 0.3s;
+}
+.link-card:hover::before{opacity:1}
+
+/* shimmer */
+.link-shine{
+  position:absolute;top:0;left:-100%;width:55%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.05),transparent);
+  transform:skewX(-18deg);transition:left 0.65s;pointer-events:none;
+}
+.link-card:hover .link-shine{left:160%}
+
+.link-card:hover{
+  border-color:var(--pb,rgba(255,107,26,0.4));
+  background:var(--surface2);
+  transform:translateY(-2px) scale(1.008);
+  box-shadow:0 8px 28px var(--ps,rgba(255,107,26,0.13));
+}
+.link-card:active{transform:translateY(0) scale(0.99)}
+
+/* per-platform */
+.lc-tg{--pc:rgba(41,160,216,0.08);--pb:rgba(41,160,216,0.45);--ps:rgba(41,160,216,0.15)}
+.lc-ig{--pc:rgba(225,48,108,0.08);--pb:rgba(225,48,108,0.45);--ps:rgba(225,48,108,0.15)}
+.lc-yt{--pc:rgba(255,50,50,0.07);--pb:rgba(255,60,60,0.45);--ps:rgba(255,60,60,0.15)}
+.lc-tt{--pc:rgba(255,255,255,0.04);--pb:rgba(255,255,255,0.22);--ps:rgba(255,255,255,0.08)}
+
+.link-icon{
+  width:44px;height:44px;border-radius:11px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;position:relative;z-index:1;
+  transition:box-shadow 0.3s,transform 0.25s;
+}
+.link-card:hover .link-icon{transform:scale(1.08)}
+.lc-tg .link-icon{background:rgba(41,160,216,0.13)}
+.lc-ig .link-icon{background:rgba(225,48,108,0.11)}
+.lc-yt .link-icon{background:rgba(255,50,50,0.11)}
+.lc-tt .link-icon{background:rgba(255,255,255,0.07)}
+.lc-tg:hover .link-icon{box-shadow:0 0 16px rgba(41,160,216,0.45)}
+.lc-ig:hover .link-icon{box-shadow:0 0 16px rgba(225,48,108,0.45)}
+.lc-yt:hover .link-icon{box-shadow:0 0 16px rgba(255,60,60,0.45)}
+.lc-tt:hover .link-icon{box-shadow:0 0 16px rgba(255,255,255,0.18)}
+.link-icon svg{width:22px;height:22px}
+
+.link-info{flex:1;min-width:0;position:relative;z-index:1}
+.link-name{font-size:14px;font-weight:600;color:var(--text)}
+.link-handle{font-size:12px;color:var(--muted);margin-top:2px;font-family:var(--mono)}
+
+.link-arrow{
+  color:var(--hint);flex-shrink:0;position:relative;z-index:1;
+  transition:color 0.25s,transform 0.25s;
+}
+.link-card:hover .link-arrow{color:var(--orange2);transform:translateX(4px)}
+
+/* ── COLLAB BUTTON ── */
+.collab-btn{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;padding:17px 24px;
+  background:linear-gradient(135deg,rgba(255,107,26,0.15) 0%,rgba(255,107,26,0.05) 100%);
+  border:1px solid rgba(255,107,26,0.4);
+  border-radius:15px;
+  color:var(--orange2);
+  font-size:15px;font-weight:600;font-family:var(--font);
+  text-decoration:none;cursor:pointer;
+  position:relative;overflow:hidden;
+  transition:border-color 0.3s,transform 0.25s,box-shadow 0.3s,background 0.3s;
+}
+.collab-btn::after{
+  content:'';position:absolute;
+  top:0;left:-100%;width:55%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,144,69,0.1),transparent);
+  transform:skewX(-18deg);transition:left 0.7s;
+}
+.collab-btn:hover::after{left:160%}
+.collab-btn:hover{
+  border-color:var(--orange);
+  background:linear-gradient(135deg,rgba(255,107,26,0.22) 0%,rgba(255,107,26,0.08) 100%);
+  box-shadow:0 0 24px rgba(255,107,26,0.25),0 0 64px rgba(255,107,26,0.1),inset 0 0 20px rgba(255,107,26,0.06);
+  transform:translateY(-2px);
+  color:var(--text);
+}
+.collab-btn:active{transform:translateY(0)}
+.collab-btn span,.collab-btn svg{position:relative;z-index:1}
+.collab-btn svg{width:18px;height:18px}
+
+/* ── FOOTER ── */
+.footer{
+  text-align:center;font-family:var(--mono);font-size:11px;
+  color:var(--hint);padding-top:2.5rem;
+  border-top:1px solid var(--border);margin-top:2.5rem;
+}
+.footer em{color:var(--orange);font-style:normal;text-shadow:0 0 10px var(--orange-glow)}
+
+/* ── ENTRANCE ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.hero{animation:fadeUp 0.7s 0.1s both}
+.stats{animation:fadeUp 0.6s 0.28s both}
+.sec-label{animation:fadeUp 0.5s 0.4s both}
+.links .link-card:nth-child(1){animation:fadeUp 0.5s 0.46s both}
+.links .link-card:nth-child(2){animation:fadeUp 0.5s 0.54s both}
+.links .link-card:nth-child(3){animation:fadeUp 0.5s 0.62s both}
+.links .link-card:nth-child(4){animation:fadeUp 0.5s 0.70s both}
+.collab-btn{animation:fadeUp 0.5s 0.82s both}
+
+/* ── MOBILE ── */
+@media(max-width:480px){
+  .wrap{padding:2.5rem 1.1rem 4rem}
+  .hero-name{font-size:24px}
+  .stat-num{font-size:17px}
+  .link-card{padding:13px 14px;gap:12px}
+  .collab-btn{padding:15px 18px;font-size:14px}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-orb1"></div>
+<div class="bg-orb2"></div>
+<div class="bg-orb3"></div>
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="avatar-wrap">
+      <div class="avatar-ring2"></div>
+      <div class="avatar-ring"></div>
+      <div class="avatar">
+        <img src="avatar.png" alt="Muhammadyusuf Karimov">
+      </div>
+    </div>
+    <h1 class="hero-name">Muhammadyusuf Karimov</h1>
+    <p class="hero-brand">MACROICE Cinema</p>
+    <p class="hero-bio">Marvel, DC va top kinolar haqida kontent — tahlillar, yangiliklar va resenzyalar.</p>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num">3k+</div>
+        <div class="stat-plat">Instagram</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">2.5k+</div>
+        <div class="stat-plat">Telegram</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">1.5k+</div>
+        <div class="stat-plat">YouTube</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="sec-label">Mening kanallarim</p>
+  <div class="links">
+
+    <a class="link-card lc-tg" href="https://t.me/macroicecinema" target="_blank" rel="noopener">
+      <div class="link-shine"></div>
+      <div class="link-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#29a0d8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 5L2 12.5l7 1M21 5l-2.5 15L9 13.5M21 5L9 13.5m0 0v5l3.5-3"/>
+        </svg>
+      </div>
+      <div class="link-info">
+        <div class="link-name">Telegram</div>
+        <div class="link-handle">@macroicecinema</div>
+      </div>
+      <svg class="link-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+
+    <a class="link-card lc-ig" href="https://instagram.com/macroice_cinema" target="_blank" rel="noopener">
+      <div class="link-shine"></div>
+      <div class="link-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#e1306c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="0.5" fill="#e1306c"/>
+        </svg>
+      </div>
+      <div class="link-info">
+        <div class="link-name">Instagram</div>
+        <div class="link-handle">@macroice_cinema</div>
+      </div>
+      <svg class="link-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+
+    <a class="link-card lc-yt" href="https://youtube.com/@MACROICEcinema" target="_blank" rel="noopener">
+      <div class="link-shine"></div>
+      <div class="link-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#ff4040" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="5" width="20" height="14" rx="4"/>
+          <polygon points="10,9 16,12 10,15" fill="#ff4040" stroke="none"/>
+        </svg>
+      </div>
+      <div class="link-info">
+        <div class="link-name">YouTube</div>
+        <div class="link-handle">@MACROICEcinema</div>
+      </div>
+      <svg class="link-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+
+    <a class="link-card lc-tt" href="https://tiktok.com/@macroice_cinema" target="_blank" rel="noopener">
+      <div class="link-shine"></div>
+      <div class="link-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="rgba(240,240,240,0.75)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
+        </svg>
+      </div>
+      <div class="link-info">
+        <div class="link-name">TikTok</div>
+        <div class="link-handle">@macroice_cinema</div>
+      </div>
+      <svg class="link-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+
+  </div>
+
+  <a class="collab-btn" href="hamkorlik.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+      <circle cx="9" cy="7" r="4"/>
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+    </svg>
+    <span>Reklama va hamkorlik</span>
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  </a>
+
+  <div class="footer">
+    <p>© 2025 <em>MACROICE</em> · Muhammadyusuf Karimov</p>
+  </div>
+
+</div>
+
+<script>
+const g=document.getElementById('cursorGlow');
+let mx=0,my=0,gx=0,gy=0,v=false;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;if(!v){g.style.opacity='1';v=true}});
+document.addEventListener('mouseleave',()=>{g.style.opacity='0';v=false});
+(function loop(){gx+=(mx-gx)*0.07;gy+=(my-gy)*0.07;g.style.left=gx+'px';g.style.top=gy+'px';requestAnimationFrame(loop)})();
+</script>
+</body>
+</html>
