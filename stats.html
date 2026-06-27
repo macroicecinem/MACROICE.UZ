@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stats — MACROICE</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#00002f;--surface:rgba(255,255,255,0.04);--surface2:rgba(255,255,255,0.07);
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);
+  --text:#e8e8ff;--muted:rgba(200,200,255,0.5);--hint:rgba(180,180,255,0.28);
+  --accent:#7eb8f7;--accent2:#a5d0ff;--accent-glow:rgba(126,184,247,0.25);
+  --green:#4ade80;--gold:#f0c060;
+  --font:'Syne',sans-serif;--mono:'DM Mono',monospace;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;-webkit-font-smoothing:antialiased;padding:2.5rem 1.25rem 4rem}
+.wrap{max-width:560px;margin:0 auto}
+
+/* HEADER */
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
+.header-left h1{font-size:22px;font-weight:800;letter-spacing:-0.02em;color:var(--text)}
+.header-left p{font-size:12px;color:var(--muted);margin-top:4px;font-family:var(--mono)}
+.reset-btn{font-family:var(--mono);font-size:11px;color:rgba(255,80,80,0.5);background:none;border:1px solid rgba(255,80,80,0.15);border-radius:8px;padding:7px 14px;cursor:pointer;transition:color .2s,border-color .2s}
+.reset-btn:hover{color:rgba(255,100,100,0.9);border-color:rgba(255,80,80,0.4)}
+
+/* TOTAL */
+.total-card{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:24px;margin-bottom:1.5rem;text-align:center;position:relative;overflow:hidden}
+.total-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0.35}
+.total-label{font-family:var(--mono);font-size:10px;color:var(--hint);text-transform:uppercase;letter-spacing:0.14em;margin-bottom:8px}
+.total-num{font-size:56px;font-weight:800;letter-spacing:-0.04em;color:var(--accent2);text-shadow:0 0 30px rgba(165,208,255,0.25);line-height:1}
+.total-sub{font-size:12px;color:var(--muted);margin-top:8px}
+
+/* SECTION */
+.sec-title{font-size:11px;font-family:var(--mono);color:var(--hint);text-transform:uppercase;letter-spacing:0.14em;margin-bottom:10px}
+
+/* STAT CARDS */
+.stat-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:1.5rem}
+
+.stat-row{
+  display:flex;align-items:center;gap:14px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;padding:14px 16px;
+  transition:border-color .25s;
+}
+.stat-row:hover{border-color:var(--border2)}
+
+.stat-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.stat-icon svg{width:20px;height:20px}
+.stat-icon img{width:100%;height:100%;object-fit:contain;border-radius:8px}
+
+.ic-tg{background:rgba(41,160,216,0.12)}
+.ic-ig{background:rgba(225,48,108,0.1)}
+.ic-yt{background:rgba(255,64,64,0.1)}
+.ic-droid{background:rgba(74,222,128,0.1)}
+.ic-ios{background:rgba(126,184,247,0.1)}
+.ic-doda{background:rgba(74,222,128,0.08)}
+
+.stat-name{flex:1;font-size:14px;font-weight:600;color:var(--text)}
+.stat-sub{font-size:11px;color:var(--muted);margin-top:1px;font-family:var(--mono)}
+
+.stat-bar-wrap{flex:1;max-width:120px}
+.stat-bar-bg{height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden}
+.stat-bar{height:100%;border-radius:2px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+
+.stat-count{font-family:var(--mono);font-size:18px;font-weight:500;color:var(--accent2);min-width:40px;text-align:right}
+
+/* LAST UPDATED */
+.updated{font-family:var(--mono);font-size:11px;color:var(--hint);text-align:center;margin-top:1.5rem}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.header{animation:fadeUp .5s .05s both}
+.total-card{animation:fadeUp .5s .15s both}
+.stat-grid{animation:fadeUp .5s .28s both}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="header-left">
+      <h1>📊 Statistika</h1>
+      <p id="updateTime">Yuklanmoqda...</p>
+    </div>
+    <button class="reset-btn" onclick="resetStats()">Tozalash</button>
+  </div>
+
+  <div class="total-card">
+    <div class="total-label">Jami bosishlar</div>
+    <div class="total-num" id="grandTotal">0</div>
+    <div class="total-sub">Barcha kanallar bo'yicha</div>
+  </div>
+
+  <div class="sec-title" style="margin-bottom:10px">Kanallar</div>
+  <div class="stat-grid" id="statGrid"></div>
+
+  <p class="updated" id="updatedAt"></p>
+
+</div>
+
+<script>
+const CHANNELS = [
+  { key:'tg',       name:'Telegram',       sub:'@macroicecinema',    color:'#29a0d8', barColor:'#29a0d8', icon:'tg' },
+  { key:'ig',       name:'Instagram',      sub:'@macroice_cinema',   color:'#e1306c', barColor:'#e1306c', icon:'ig' },
+  { key:'yt',       name:'YouTube',        sub:'@MACROICEcinema',    color:'#ff4040', barColor:'#ff4040', icon:'yt' },
+  { key:'doda_android', name:'DodaPlay',   sub:'Android — Google Play', color:'#4ade80', barColor:'#4ade80', icon:'droid' },
+  { key:'doda_ios', name:'DodaPlay',       sub:'iOS — App Store',    color:'#7eb8f7', barColor:'#7eb8f7', icon:'ios' },
+  { key:'collab',   name:'Hamkorlik',      sub:'macroice.uz/hamkorlik', color:'#7eb8f7', barColor:'#7eb8f7', icon:'collab' },
+];
+
+const ICONS = {
+  tg: `<svg viewBox="0 0 24 24" fill="none" stroke="#29a0d8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 5L2 12.5l7 1M21 5l-2.5 15L9 13.5M21 5L9 13.5m0 0v5l3.5-3"/></svg>`,
+  ig: `<svg viewBox="0 0 24 24" fill="none" stroke="#e1306c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="#e1306c"/></svg>`,
+  yt: `<svg viewBox="0 0 24 24" fill="none" stroke="#ff4040" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="4"/><polygon points="10,9 16,12 10,15" fill="#ff4040" stroke="none"/></svg>`,
+  droid: `<svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3l14 9-14 9V3z"/></svg>`,
+  ios: `<svg viewBox="0 0 24 24" fill="none" stroke="#7eb8f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/><path d="M12 8v4M12 16h.01"/></svg>`,
+  collab: `<svg viewBox="0 0 24 24" fill="none" stroke="#7eb8f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+};
+
+function getStats(){
+  return JSON.parse(localStorage.getItem('mi_stats')||'{}');
+}
+
+function render(){
+  const s = getStats();
+  const vals = CHANNELS.map(c => s[c.key]||0);
+  const max = Math.max(...vals, 1);
+  const grand = vals.reduce((a,b)=>a+b,0);
+
+  document.getElementById('grandTotal').textContent = grand;
+
+  const grid = document.getElementById('statGrid');
+  grid.innerHTML = CHANNELS.map((c,i) => {
+    const count = vals[i];
+    const pct = Math.round((count/max)*100);
+    const icClass = 'ic-' + (c.icon==='droid'?'droid':c.icon==='ios'?'ios':c.icon);
+    return `
+    <div class="stat-row">
+      <div class="stat-icon ${icClass}">${ICONS[c.icon]||''}</div>
+      <div style="flex:1;min-width:0">
+        <div class="stat-name">${c.name}</div>
+        <div class="stat-sub">${c.sub}</div>
+      </div>
+      <div class="stat-bar-wrap">
+        <div class="stat-bar-bg">
+          <div class="stat-bar" style="width:${pct}%;background:${c.barColor}"></div>
+        </div>
+      </div>
+      <div class="stat-count">${count}</div>
+    </div>`;
+  }).join('');
+
+  const now = new Date();
+  document.getElementById('updateTime').textContent =
+    now.toLocaleDateString('uz-UZ') + ' · ' + now.toLocaleTimeString('uz-UZ',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('updatedAt').textContent =
+    'Maʼlumotlar faqat shu qurilmada saqlanadi';
+}
+
+function resetStats(){
+  if(confirm('Barcha statistikani tozalaysizmi?')){
+    localStorage.removeItem('mi_stats');
+    render();
+  }
+}
+
+render();
+setInterval(render, 5000);
+</script>
+</body>
+</html>
