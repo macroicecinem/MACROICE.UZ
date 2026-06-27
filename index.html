@@ -359,7 +359,7 @@ body{
 
   <p class="sec-label">Mening kanallarim</p>
   <div class="links">
-    <a class="link-card lc-tg" href="https://t.me/macroicecinema" target="_blank" rel="noopener">
+    <a class="link-card lc-tg" href="https://t.me/macroicecinema" target="_blank" rel="noopener" onclick="track('tg')">
       <div class="link-shine"></div>
       <div class="link-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="#29a0d8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -373,7 +373,7 @@ body{
       <svg class="link-arrow" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
     </a>
 
-    <a class="link-card lc-ig" href="https://instagram.com/macroice_cinema" target="_blank" rel="noopener">
+    <a class="link-card lc-ig" href="https://instagram.com/macroice_cinema" target="_blank" rel="noopener" onclick="track('ig')">
       <div class="link-shine"></div>
       <div class="link-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="#e1306c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -389,7 +389,7 @@ body{
       <svg class="link-arrow" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
     </a>
 
-    <a class="link-card lc-yt" href="https://yt.openinapp.co/vhpjc" target="_blank" rel="noopener">
+    <a class="link-card lc-yt" href="https://yt.openinapp.co/vhpjc" target="_blank" rel="noopener" onclick="track('yt')">
       <div class="link-shine"></div>
       <div class="link-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="#ff4040" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -417,7 +417,7 @@ body{
     </a>
   </div>
 
-  <a class="collab-btn" href="hamkorlik.html">
+  <a class="collab-btn" href="hamkorlik.html" onclick="track('collab')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
       <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
       <circle cx="9" cy="7" r="4"/>
@@ -454,6 +454,12 @@ let mx=0,my=0,gx=0,gy=0,v=false;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;if(!v){g.style.opacity='1';v=true}});
 document.addEventListener('mouseleave',()=>{g.style.opacity='0';v=false});
 (function loop(){gx+=(mx-gx)*0.07;gy+=(my-gy)*0.07;g.style.left=gx+'px';g.style.top=gy+'px';requestAnimationFrame(loop)})();
+
+function track(key){
+  const s=JSON.parse(localStorage.getItem('mi_stats')||'{}');
+  s[key]=(s[key]||0)+1;
+  localStorage.setItem('mi_stats',JSON.stringify(s));
+}
 </script>
 </body>
 </html>
